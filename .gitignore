@@ -1,0 +1,28 @@
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints/
+
+# macOS System Files
+.DS_Store
+
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+env/
+venv/
+ENV/
+*.env
+
+# Jupyter Notebook temporary files
+*.nbconvert.ipynb
+*.backup.ipynb
+
+# Editor configs (optional)
+.vscode/
+.idea/
+
+# Logs
+*.log
