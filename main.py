@@ -31,27 +31,35 @@ for feature in ['country', 'agent']:
 
 # feature engineering
 feature_flags = config["features"]["flags"]
+drop_after_fe = set()
 
 if feature_flags["total_nights"] &\
     set1_in_set2({'stays_in_weekend_nights', 'stays_in_week_nights'}, current_features):
     data['total_nights'] = data['stays_in_weekend_nights'] + data['stays_in_week_nights']
+    drop_after_fe = drop_after_fe.union({'stays_in_weekend_nights', 'stays_in_week_nights'})
 
 if feature_flags["stays_format"] &\
     set1_in_set2({'stays_in_weekend_nights', 'stays_in_week_nights'}, current_features):
     data['stays_format'] = data.apply(stays_func, axis=1)
+    drop_after_fe = drop_after_fe.union({'stays_in_weekend_nights', 'stays_in_week_nights'})
 
 if feature_flags["total_guests"] &\
     set1_in_set2({'adults', 'children', 'babies'}, current_features):
     data['total_guests'] = data['adults'] + data['children'] + data['babies']
+    drop_after_fe = drop_after_fe.union({'adults', 'children', 'babies'})
 
 if feature_flags["room_assigned_equal_reserved"] &\
     set1_in_set2({'assigned_room_type', 'reserved_room_type'}, current_features):
     data['room_assigned_equal_reserved'] = data.apply(room_type, axis=1)
+    drop_after_fe = drop_after_fe.union({'assigned_room_type', 'reserved_room_type'})
 
 if feature_flags["map_deposit_type"]:
     data['deposit_type'] = data.apply(deposit_type, axis=1)
 
+data = data.drop(drop_after_fe, axis=1)
 
-#  'trend',
-#  'seasonal',
-#  'resid'
+current_features = set(data.columns)
+
+print(len(current_features))
+print(current_features)
+print(drop_after_fe)
