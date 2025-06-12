@@ -4,7 +4,7 @@ data:
 preprocessing:
   drop_from_start: ['company', 'reservation_status', 'arrival_date_week_number',
                 'arrival_date_day_of_month', 'reservation_status_date', 'is_repeated_guest',
-                'days_in_waiting_list', 'is_canceled']
+                'days_in_waiting_list']
   children_impute_value: 0
 
 features:
@@ -13,3 +13,7 @@ features:
                       'trend', 'seasonal', 'resid']
   flags:
     total_nights: True
+    stays_format: True
+    total_guests: True
+    room_assigned_equal_reserved: True
+    map_deposit_type: True
