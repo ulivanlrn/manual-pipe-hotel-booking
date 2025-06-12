@@ -6,3 +6,10 @@ preprocessing:
                 'arrival_date_day_of_month', 'reservation_status_date', 'is_repeated_guest',
                 'days_in_waiting_list', 'is_canceled']
   children_impute_value: 0
+
+features:
+  new_features_bank: ['total_nights', 'stays_format', 'total_guests',
+                      'room_assigned_equal_reserved', 'deposit_type',
+                      'trend', 'seasonal', 'resid']
+  flags:
+    total_nights: True
