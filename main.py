@@ -12,17 +12,20 @@ with open("config/baseline_config.yaml", "r") as f:
 data = load_data(config["data"]["path"])
 
 # initial cleaning
-data = data.drop(config["preprocessing"]["drop_from_start"], axis=1)
 data = data[data['adults']>0]
+data = data.drop(config["preprocessing"]["drop_from_start"], axis=1)
+
+current_features = list(data.columns)
 
 # imputing missing values
-data['children'] = fill_in_constant(data['children'],
-                                    config["preprocessing"]["children_impute_value"])
-random_impute(data, 'country')
-random_impute(data, 'agent')
+if 'children' in current_features:
+    data['children'] = fill_in_constant(data['children'],
+                                        config["preprocessing"]["children_impute_value"])
+for feature in ['country', 'agent']:
+    if feature in current_features:
+        random_impute(data, feature)
 
 #feature engineering
-init_columns = list(data.columns)
 feature_flags = config["features"]["flags"]
 # if feature_flags["total_nights"] & ''
 # 'total_nights',
