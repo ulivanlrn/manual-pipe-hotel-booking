@@ -31,6 +31,8 @@ for feature in ['country', 'agent']:
 
 # feature engineering
 feature_flags = config["features"]["flags"]
+# a variable that collects all old features which contributed to new ones
+# and are not needed afterward
 drop_after_fe = set()
 
 if feature_flags["total_nights"] &\
@@ -41,7 +43,6 @@ if feature_flags["total_nights"] &\
 if feature_flags["stays_format"] &\
     set1_in_set2({'stays_in_weekend_nights', 'stays_in_week_nights'}, current_features):
     data['stays_format'] = data.apply(stays_func, axis=1)
-    drop_after_fe = drop_after_fe.union({'stays_in_weekend_nights', 'stays_in_week_nights'})
 
 if feature_flags["total_guests"] &\
     set1_in_set2({'adults', 'children', 'babies'}, current_features):
@@ -59,7 +60,3 @@ if feature_flags["map_deposit_type"]:
 data = data.drop(drop_after_fe, axis=1)
 
 current_features = set(data.columns)
-
-print(len(current_features))
-print(current_features)
-print(drop_after_fe)
