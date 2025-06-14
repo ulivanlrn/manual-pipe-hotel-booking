@@ -1,8 +1,7 @@
 # import pandas as pd
 from data.load_data import load_data
-from preprocessing.impute_data import fill_in_constant
-from preprocessing.impute_data import random_impute
 from preprocessing.feature_engineering import run_feature_engineering
+from preprocessing.impute_data import run_imputation
 
 # opening config
 import yaml
@@ -15,16 +14,10 @@ data = load_data(config["data"]["path"])
 # initial cleaning
 data = data[data['adults']>0]
 data = data.drop(config["preprocessing"]["drop_from_start"], axis=1)
-
 current_features = set(data.columns)
 
 # imputing missing values
-if 'children' in current_features:
-    data['children'] = fill_in_constant(data['children'],
-                                        config["preprocessing"]["children_impute_value"])
-for feature in ['country', 'agent']:
-    if feature in current_features:
-        random_impute(data, feature)
+data = run_imputation(data, config, current_features)
 
 # feature engineering
 data = run_feature_engineering(data, config, current_features)
