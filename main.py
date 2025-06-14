@@ -21,7 +21,11 @@ X = data.drop(['is_canceled'], axis=1)
 y = data['is_canceled']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42,
                                                     stratify=y)
-current_features = set(X_train.columns)
+
+cat_features = X.select_dtypes('object').columns
+num_features = X.select_dtypes(exclude='object').columns
+
+current_features = set(X.columns)
 
 # imputing missing values
 data = run_imputation(data, config, current_features)
@@ -30,5 +34,5 @@ data = run_imputation(data, config, current_features)
 data = run_feature_engineering(data, config, current_features)
 
 current_features = set(data.columns)
-print(len(current_features))
-print(current_features)
+# print(len(current_features))
+# print(current_features)
