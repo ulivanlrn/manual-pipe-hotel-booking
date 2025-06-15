@@ -28,6 +28,7 @@ class Imputer(BaseEstimator, TransformerMixin):
             remainder='passthrough',
             verbose_feature_names_out=False
         )
+
     @staticmethod
     def fill_in_constant(column, value):
         return column.fillna(value)
