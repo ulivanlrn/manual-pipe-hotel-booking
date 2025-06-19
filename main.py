@@ -1,9 +1,14 @@
+from sklearn import set_config
 from sklearn.model_selection import train_test_split
+
 from data.load_data import load_data
 from preprocessing.feature_engineering import run_feature_engineering
 from preprocessing.impute_data import Imputer
-from sklearn import set_config
+
+import logging
+
 set_config(transform_output='pandas')
+logging.basicConfig(level=logging.DEBUG, filename='main_logs.log', filemode='w')
 
 # opening config
 import yaml
