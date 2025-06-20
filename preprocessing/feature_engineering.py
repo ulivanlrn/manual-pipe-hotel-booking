@@ -1,4 +1,4 @@
-from utils import set1_in_set2
+from utils.utils import set1_in_set2
 
 def stays_func(row):
     feature1 = 'stays_in_weekend_nights'

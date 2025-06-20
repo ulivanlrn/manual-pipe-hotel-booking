@@ -1,5 +1,5 @@
 data:
-  path: "data/hotel_bookings.csv"
+  path: "../data/hotel_bookings.csv"
 
 preprocessing:
   drop_from_start: ['company', 'reservation_status', 'arrival_date_week_number',

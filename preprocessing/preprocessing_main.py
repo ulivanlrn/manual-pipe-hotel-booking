@@ -1,3 +1,4 @@
+import yaml
 from sklearn import set_config
 from sklearn.model_selection import train_test_split
 
@@ -8,11 +9,12 @@ from preprocessing.impute_data import Imputer
 import logging
 
 set_config(transform_output='pandas')
-logging.basicConfig(level=logging.DEBUG, filename='main_logs.log', filemode='w')
+logging.basicConfig(level=logging.DEBUG, filename='../logs/preprocessing.log', filemode='w')
 
 # opening config
-import yaml
-with open("config/baseline_config.yaml", "r") as f:
+config_name = "baseline"
+config_path = f"../config/preprocessing/{config_name}.yaml"
+with open(config_path, "r") as f:
     config = yaml.safe_load(f)
 
 # data loading
@@ -53,3 +55,4 @@ all_features = set(X_train.columns)
 feature_types = X_train.dtypes.value_counts()
 logging.debug("{0} features after FE: {1}".format(len(all_features), all_features))
 logging.debug(f"Feature types: {feature_types}")
+
