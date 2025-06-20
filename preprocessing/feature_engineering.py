@@ -36,7 +36,7 @@ def run_feature_engineering(data, config, current_features):
     df = data.copy()
 
     # A dictionary specifying which features should be created
-    feature_flags = config["features"]["flags"]
+    feature_flags = config["feature_flags"]
 
     # a variable that collects all old features which contributed to new ones \
     # and are not needed afterward

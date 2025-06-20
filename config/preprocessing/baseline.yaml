@@ -1,17 +1,17 @@
-data:
-  path: "../data/hotel_bookings.csv"
+raw_data_path: "../data/hotel_bookings.csv"
+drop_from_start: ['company', 'reservation_status', 'arrival_date_week_number',
+                  'arrival_date_day_of_month', 'reservation_status_date', 'is_repeated_guest',
+                  'days_in_waiting_list', 'arrival_date_year', 'arrival_date_month']
+knn_imputer_neighbors: 3
+children_impute_value: 0
 
-preprocessing:
-  drop_from_start: ['company', 'reservation_status', 'arrival_date_week_number',
-                    'arrival_date_day_of_month', 'reservation_status_date', 'is_repeated_guest',
-                    'days_in_waiting_list', 'arrival_date_year', 'arrival_date_month']
-  knn_imputer_neighbors: 3
-  children_impute_value: 0
+feature_flags:
+  total_nights: True
+  stays_format: True
+  total_guests: True
+  room_assigned_equal_reserved: True
+  map_deposit_type: True
 
-features:
-  flags:
-    total_nights: True
-    stays_format: True
-    total_guests: True
-    room_assigned_equal_reserved: True
-    map_deposit_type: True
+train_test_split:
+  test_size: 0.25
+  random_state: 123

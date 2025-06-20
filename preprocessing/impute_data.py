@@ -17,7 +17,7 @@ class Imputer(BaseEstimator, TransformerMixin):
         self.config = config
         self.num_features = num_features
         self.cat_features = cat_features
-        self.knn_neighbors = config["preprocessing"]["knn_imputer_neighbors"]
+        self.knn_neighbors = config["knn_imputer_neighbors"]
         self.knn_imputer = KNNImputer(n_neighbors=self.knn_neighbors)
         self.simple_imputer = SimpleImputer(strategy='most_frequent')
         self.column_transformer = ColumnTransformer(
@@ -41,6 +41,6 @@ class Imputer(BaseEstimator, TransformerMixin):
         x_copy = x.copy()
         if 'children' in self.num_features:
             x_copy['children'] = self.fill_in_constant(x_copy['children'],
-                                        self.config["preprocessing"]["children_impute_value"])
+                                        self.config["children_impute_value"])
         x_transformed = self.column_transformer.transform(x_copy)
         return x_transformed

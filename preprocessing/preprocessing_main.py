@@ -18,17 +18,21 @@ with open(config_path, "r") as f:
     config = yaml.safe_load(f)
 
 # data loading
-data = load_data(config["data"]["path"])
+data = load_data(config["raw_data_path"])
 logging.info("Raw data loaded")
 
 # initial cleaning
 data = data[data['adults']>0]
-data = data.drop(config["preprocessing"]["drop_from_start"], axis=1)
+data = data.drop(config["drop_from_start"], axis=1)
 
 # splitting data
 X = data.drop(['is_canceled'], axis=1)
 y = data['is_canceled']
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=123,
+test_size = config["train_test_split"]["test_size"]
+random_state = config["train_test_split"]["random_state"]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size,
+                                                    random_state=random_state,
                                                     stratify=y)
 
 cat_features = list(X.select_dtypes('object').columns)
