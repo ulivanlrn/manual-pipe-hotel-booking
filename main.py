@@ -17,6 +17,7 @@ with open("config/baseline_config.yaml", "r") as f:
 
 # data loading
 data = load_data(config["data"]["path"])
+logging.info("Loaded raw data")
 
 # initial cleaning
 data = data[data['adults']>0]
@@ -30,18 +31,25 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random
 
 cat_features = list(X.select_dtypes('object').columns)
 num_features = list(X.select_dtypes(exclude='object').columns)
-current_features = set(X.columns)
+all_features = set(X.columns)
+feature_types = X.dtypes.value_counts()
+
+logging.info("Cleaned data and split into train and test sets")
+logging.debug("{0} features before FE: {1}".format(len(all_features), all_features))
+logging.debug(f"Feature types: {feature_types}")
 
 # imputing missing values
 imputer = Imputer(config, num_features, cat_features)
 X_train = imputer.fit_transform(X_train)
 X_test = imputer.transform(X_test)
 
-# feature engineering
-X_train = run_feature_engineering(X_train, config, current_features)
-X_test = run_feature_engineering(X_test, config, current_features)
+logging.info("Imputation complete")
 
-current_features = set(X_train.columns)
-print(X_train.dtypes.value_counts())
-print(len(current_features))
-print(current_features)
+# feature engineering
+X_train = run_feature_engineering(X_train, config, all_features)
+X_test = run_feature_engineering(X_test, config, all_features)
+
+all_features = set(X_train.columns)
+feature_types = X_train.dtypes.value_counts()
+logging.debug("{0} features after FE: {1}".format(len(all_features), all_features))
+logging.debug(f"Feature types: {feature_types}")
