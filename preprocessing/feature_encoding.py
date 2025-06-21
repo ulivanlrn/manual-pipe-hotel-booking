@@ -18,7 +18,14 @@ def separate_by_cardinality(df, threshold):
     return list(high_cardinality_feats), list(low_cardinality_feats)
 
 class Encoder(BaseEstimator, TransformerMixin):
+    """
+    A custom categorical encoder, which applies OneHotEncoder to low cardinality features and
+    TargetEncoder to high cardinality features.
 
+    Attributes:
+        random_state (int): Random state for target encoder.
+        threshold (int): Threshold that separates high a low cardinality features.
+    """
     def __init__(self, random_state, threshold):
         self.random_state = random_state
         self.threshold = threshold
