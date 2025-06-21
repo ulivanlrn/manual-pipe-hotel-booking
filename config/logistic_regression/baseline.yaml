@@ -1,0 +1,2 @@
+type: "LogisticRegression"
+needs_encoding: True
