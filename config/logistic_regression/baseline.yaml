@@ -1,2 +1,5 @@
 type: "LogisticRegression"
-needs_encoding: True
+encoding:
+  requires_encoding: True
+  random_state: 123
+  cardinality_threshold: 5
