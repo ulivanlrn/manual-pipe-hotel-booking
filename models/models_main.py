@@ -26,6 +26,10 @@ X_test = load_data(f"../data/X_test_{preprocessing_config_name}.csv")
 y_train = load_data(f"../data/y_train_{preprocessing_config_name}.csv")
 y_test = load_data(f"../data/y_test_{preprocessing_config_name}.csv")
 
+# converting target to 1d array
+y_train = y_train.values.ravel()
+y_test = y_test.values.ravel()
+
 logging.info(f"Data version: {preprocessing_config_name}")
 logging.info("Data loading complete")
 
