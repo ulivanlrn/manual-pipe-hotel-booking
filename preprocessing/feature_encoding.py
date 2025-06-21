@@ -2,10 +2,18 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import OneHotEncoder, TargetEncoder
 from sklearn.compose import ColumnTransformer
 
-def separate_on_cardinality(df):
+def separate_by_cardinality(df, threshold):
+    """
+    Function which figures out the names of categorical features and divides them by cardinality.
+
+    :param df: DataFrame.
+    :param threshold: Threshold that separates high a low cardinality features.
+    :return: Tuple consisting of two lists, with names of high cardinality features
+    and names of low cardinality features respectively.
+    """
     info_cat_feats = df.select_dtypes('object').nunique()
     cat_feats = info_cat_feats.index
-    high_cardinality_feats = info_cat_feats[info_cat_feats > 5].index
+    high_cardinality_feats = info_cat_feats[info_cat_feats > threshold].index
     low_cardinality_feats = cat_feats.difference(high_cardinality_feats)
     return list(high_cardinality_feats), list(low_cardinality_feats)
 
@@ -24,7 +32,7 @@ class Encoder(BaseEstimator, TransformerMixin):
         self.high_card_feats = None
 
     def fit(self, x, y):
-        self.high_card_feats, self.low_card_feats = separate_on_cardinality(x)
+        self.high_card_feats, self.low_card_feats = separate_by_cardinality(x, self.threshold)
         self.column_transformer = ColumnTransformer(
             transformers=[
                 ('one_hot', self.one_hot_encoder, self.low_card_feats),
