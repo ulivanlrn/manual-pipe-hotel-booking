@@ -14,12 +14,19 @@ class OutlierHandler(BaseEstimator, TransformerMixin):
         self.outlier_config = outlier_config
         self.transformers = []
         if self.outlier_config["log_transform"]["flag"]:
-            self.log_transform = ('log_transform', FunctionTransformer(),
+            self.log_transform = ('log_transform', FunctionTransformer(log_transform),
                                   self.outlier_config["log_transform"]["columns"])
-        pass
+            self.transformers.append(self.log_transform)
+        self.column_transformer = ColumnTransformer(
+            transformers=self.transformers,
+            remainder='passthrough',
+            verbose_feature_names_out=False
+        )
 
-    def fit(self, x, y=None):
+    def fit(self, x, _):
+        self.column_transformer.fit(x)
         return self
 
     def transform(self, x):
-        pass
+        x_transformed = self.column_transformer.transform(x)
+        return x_transformed
