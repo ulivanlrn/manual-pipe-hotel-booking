@@ -5,3 +5,6 @@ encoding:
   cardinality_threshold: 5
 outliers:
   flag: True
+  log_transform:
+    flag: True
+    columns:
