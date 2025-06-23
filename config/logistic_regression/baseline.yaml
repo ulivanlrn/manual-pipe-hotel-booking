@@ -23,3 +23,14 @@ outliers:
     n_bins: 4
     random_state: 123
     columns: ['agent']
+
+scaling:
+  flag: True
+
+  min_max_scaling:
+    flag: True
+    columns: ['total_nights', 'total_guests', 'agent', 'total_of_special_requests']
+
+  std_scaling:
+    flag: True
+    columns: ['lead_time', 'adr']
