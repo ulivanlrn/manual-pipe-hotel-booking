@@ -23,12 +23,12 @@ class Encoder(BaseEstimator, TransformerMixin):
     TargetEncoder to high cardinality features.
 
     Attributes:
-        random_state (int): Random state for target encoder.
-        threshold (int): Threshold that separates high a low cardinality features.
+        encoding_config (dict): Encoding configuration.
     """
-    def __init__(self, random_state, threshold):
-        self.random_state = random_state
-        self.threshold = threshold
+    def __init__(self, encoding_config):
+        self.encoding_config = encoding_config
+        self.random_state = self.encoding_config["random_state"]
+        self.threshold = self.encoding_config["cardinality_threshold"]
         self.one_hot_encoder = OneHotEncoder(drop='first',
                                              sparse_output=False,
                                              handle_unknown='ignore')
