@@ -1,8 +1,14 @@
-# import logging
 from sklearn.pipeline import Pipeline
 from preprocessing.feature_encoding import Encoder
 from preprocessing.feature_scaling import Scaler
 from preprocessing.handling_outliers import OutlierHandler
+from sklearn.linear_model import LogisticRegression
+
+def get_model_class(name):
+    if name == "LogisticRegression":
+        return LogisticRegression
+    else:
+        raise ValueError(f"Unsupported model type: {name}")
 
 def build_pipeline(model_config):
     steps = []
@@ -24,5 +30,10 @@ def build_pipeline(model_config):
         scaling_config = model_config["scaling"]
         scaler = Scaler(scaling_config=scaling_config)
         steps.append(('scaler', scaler))
+
+    # model
+    model_class = get_model_class(model_config["type"])
+    model = model_class(**model_config["params"])
+    steps.append(('model', model))
 
     return Pipeline(steps)
