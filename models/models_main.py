@@ -8,7 +8,7 @@ set_config(transform_output='pandas')
 logging.basicConfig(level=logging.DEBUG, filename='../logs/models.log', filemode='w')
 
 # MODEL AND CONFIG
-model_type = "logistic_regression"
+model_type = "LogisticRegression"
 config_name = "baseline"
 config_path = f"../config/{model_type}/{config_name}.yaml"
 with open(config_path, "r") as f:
