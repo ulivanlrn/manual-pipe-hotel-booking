@@ -1,5 +1,7 @@
 type: "LogisticRegression"
 
+params: {}
+
 encoding:
   requires_encoding: True
   random_state: 123
