@@ -36,3 +36,7 @@ scaling:
   std_scaling:
     flag: True
     columns: ['lead_time', 'adr']
+
+decision_threshold_tuning:
+  flag: True
+  threshold: 0.5
