@@ -35,4 +35,3 @@ logging.info("Data loading complete")
 
 # building pipeline
 pipeline = build_pipeline(config)
-logging.debug(f"Pipeline steps: {list(pipeline.named_steps.keys())}")
