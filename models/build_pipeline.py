@@ -5,12 +5,22 @@ from preprocessing.handling_outliers import OutlierHandler
 from sklearn.linear_model import LogisticRegression
 
 def get_model_class(name):
+    """
+    Function to get a model class by name.
+    :param name: Name provided in config under type.
+    :return: Model class.
+    """
     if name == "LogisticRegression":
         return LogisticRegression
     else:
         raise ValueError(f"Unsupported model type: {name}")
 
 def build_pipeline(model_config):
+    """
+    Function to build a pipeline.
+    :param model_config: Configuration file which controls what should be included in the pipeline.
+    :return: A pipeline object.
+    """
     steps = []
 
     # encoding
