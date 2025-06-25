@@ -3,6 +3,7 @@ from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import FunctionTransformer
 from sklearn.preprocessing import KBinsDiscretizer
 import numpy as np
+import warnings
 
 def log_transform(df):
     """
@@ -11,8 +12,10 @@ def log_transform(df):
     :param df: Original dataframe.
     :return: Transformed dataframe.
     """
-    for col in df:
-        df[col] = np.log1p(df[col])
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", category=RuntimeWarning)
+        for col in df:
+            df[col] = np.log1p(df[col])
     return df.fillna(0)
 
 def outliers_substitute(df, config):
