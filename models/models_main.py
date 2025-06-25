@@ -1,5 +1,6 @@
 from data.load_data import load_data
 from models.build_pipeline import build_pipeline
+from models.train_evaluate import train_evaluate
 import yaml
 from sklearn import set_config
 import logging
@@ -35,3 +36,7 @@ logging.info("Data loading complete")
 
 # building pipeline
 pipeline = build_pipeline(config)
+
+# training and evaluating the model
+model_scores = train_evaluate(pipeline, X_train, y_train, X_test, y_test)
+logging.info(f"Model scores in format [train_score, test_score]: {model_scores}")
