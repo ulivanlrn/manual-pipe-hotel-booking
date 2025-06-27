@@ -3,7 +3,6 @@ from preprocessing.feature_encoding import Encoder
 from preprocessing.feature_scaling import Scaler
 from preprocessing.handling_outliers import OutlierHandler
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import FixedThresholdClassifier
 import logging
 
 def get_model_class(name):
@@ -50,11 +49,5 @@ def build_pipeline(model_config):
 
     pipeline = Pipeline(steps=steps)
     logging.debug(f"Pipeline steps: {list(pipeline.named_steps.keys())}")
-
-    # tuning decision threshold
-    if model_config["decision_threshold_tuning"]["flag"]:
-        threshold = model_config["decision_threshold_tuning"]["threshold"]
-        pipeline = FixedThresholdClassifier(pipeline, threshold=threshold)
-        logging.info("The decision threshold is set to {}".format(threshold))
 
     return pipeline
