@@ -2,13 +2,12 @@ from sklearn.metrics import balanced_accuracy_score, precision_score, recall_sco
 
 def evaluate_model(y_true_train, y_pred_train, y_true_test, y_pred_test):
     """
-    Function to compute evaluation metrics.
-
+    Function to compute evaluation metrics for train and test sets.
     :param y_true_train:
     :param y_pred_train:
     :param y_true_test:
     :param y_pred_test:
-    :return:
+    :return: Dictionary with computed metrics.
     """
     scores = {}
 
@@ -28,9 +27,14 @@ def evaluate_model(y_true_train, y_pred_train, y_true_test, y_pred_test):
     f1_train = round(f1_score(y_true_train, y_pred_train), 4)
     f1_test = round(f1_score(y_true_test, y_pred_test), 4)
 
-    scores['balanced accuracy score'] = [b_acc_train, b_acc_test]
-    scores['precision score'] = [pr_train, pr_test]
-    scores['recall score'] = [rec_train, rec_test]
-    scores['f1 score'] = [f1_train, f1_test]
+    scores['balanced accuracy train score'] = b_acc_train
+    scores['precision train score'] = pr_train
+    scores['recall train score'] = rec_train
+    scores['f1 train score'] = f1_train
+
+    scores['balanced accuracy test score'] = b_acc_test
+    scores['precision test score'] = pr_test
+    scores['recall test score'] = rec_test
+    scores['f1 test score'] = f1_test
 
     return scores
