@@ -1,9 +1,12 @@
 from data.load_data import load_data
 from models.build_pipeline import build_pipeline
-from models.train_evaluate import train_evaluate
+from models.evaluate import evaluate_model
+from models.decision_threshold import tune_threshold
 import yaml
 from sklearn import set_config
 import logging
+import mlflow
+from mlflow.models import infer_signature
 
 set_config(transform_output='pandas')
 logging.basicConfig(level=logging.DEBUG, filename='../logs/models.log', filemode='w')
@@ -36,7 +39,25 @@ logging.info("Data loading complete")
 
 # building pipeline
 pipeline = build_pipeline(config)
+main_params = pipeline.named_steps['model'].get_params()
 
-# training and evaluating the model
-model_scores = train_evaluate(pipeline, X_train, y_train, X_test, y_test)
-logging.info(f"Model scores in format [train_score, test_score]: {model_scores}")
+# tuning decision threshold
+if config["decision_threshold_tuning"]["flag"]:
+    pipeline = tune_threshold(pipeline, config)
+    threshold = config["decision_threshold_tuning"]["threshold"]
+    main_params.update({'decision threshold': threshold})
+
+# training and making predictions
+pipeline.fit(X_train, y_train)
+y_pred_train = pipeline.predict(X_train)
+y_pred_test = pipeline.predict(X_test)
+
+# logging experiment to MLFlow
+# mlflow.set_tracking_uri('http://localhost:8080')
+# mlflow.set_experiment("Experiment on 'baseline' data")
+# signature = infer_signature(X_test, pipeline.predict(X_test)) # model signature
+logging.debug(main_params)
+# with mlflow.start_run():
+#     # model hyperparameters
+#     mlflow.log_params(model_params)
+
