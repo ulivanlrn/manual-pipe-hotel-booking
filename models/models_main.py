@@ -39,25 +39,29 @@ logging.info("Data loading complete")
 
 # building pipeline
 pipeline = build_pipeline(config)
-main_params = pipeline.named_steps['model'].get_params()
+key_params = pipeline.named_steps['model'].get_params()
 
 # tuning decision threshold
 if config["decision_threshold_tuning"]["flag"]:
-    pipeline = tune_threshold(pipeline, config)
-    threshold = config["decision_threshold_tuning"]["threshold"]
-    main_params.update({'decision threshold': threshold})
+    decision_threshold = config["decision_threshold_tuning"]["threshold"]
+    pipeline = tune_threshold(pipeline, decision_threshold)
+    key_params.update({'decision_threshold': decision_threshold})
 
-# training and making predictions
+# training and evaluating
 pipeline.fit(X_train, y_train)
 y_pred_train = pipeline.predict(X_train)
 y_pred_test = pipeline.predict(X_test)
+metrics = evaluate_model(y_train, y_pred_train, y_test, y_pred_test)
 
 # logging experiment to MLFlow
-# mlflow.set_tracking_uri('http://localhost:8080')
-# mlflow.set_experiment("Experiment on 'baseline' data")
-# signature = infer_signature(X_test, pipeline.predict(X_test)) # model signature
-logging.debug(main_params)
-# with mlflow.start_run():
-#     # model hyperparameters
-#     mlflow.log_params(model_params)
+mlflow.set_tracking_uri('http://localhost:8080')
+mlflow.set_experiment("Experiment LogisticRegression")
+signature = infer_signature(X_test, pipeline.predict(X_test)) # model signature
 
+with mlflow.start_run():
+    # log model hyperparameters and other key hyperparameters
+    mlflow.log_params(key_params)
+    # log model config
+    mlflow.log_artifact(config_path)
+    # log evaluation metrics
+    mlflow.log_metrics(metrics)
