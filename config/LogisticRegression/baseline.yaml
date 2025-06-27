@@ -2,6 +2,10 @@ type: "LogisticRegression"
 
 params: {}
 
+decision_threshold_tuning:
+  flag: True
+  threshold: 0.5
+
 encoding:
   requires_encoding: True
   random_state: 123
@@ -36,7 +40,3 @@ scaling:
   std_scaling:
     flag: True
     columns: ['lead_time', 'adr']
-
-decision_threshold_tuning:
-  flag: True
-  threshold: 0.5
