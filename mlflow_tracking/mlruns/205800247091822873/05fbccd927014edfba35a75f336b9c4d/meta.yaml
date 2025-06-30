@@ -1,0 +1,14 @@
+artifact_uri: mlflow-artifacts:/205800247091822873/05fbccd927014edfba35a75f336b9c4d/artifacts
+end_time: 1751285010509
+entry_point_name: ''
+experiment_id: '205800247091822873'
+lifecycle_stage: active
+run_id: 05fbccd927014edfba35a75f336b9c4d
+run_name: powerful-foal-521
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751285008544
+status: 3
+tags: []
+user_id: evgeniikuryzhov
