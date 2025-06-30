@@ -13,28 +13,28 @@ logging.basicConfig(level=logging.DEBUG, filename='../logs/models.log', filemode
 
 # MODEL AND CONFIG
 model_type = "LogisticRegression"
-config_name = "baseline"
-config_path = f"../config/{model_type}/{config_name}.yaml"
+model_version = "baseline"
+config_path = f"../config/{model_type}/{model_version}.yaml"
 with open(config_path, "r") as f:
     config = yaml.safe_load(f)
 
 logging.info(f"Experiment on: {model_type}")
-logging.info(f"Config: {config_name}")
+logging.info(f"Config: {model_version}")
 
 # DATA LOADING (data name suffix is the same as the name of the config for preprocessing,
 # which was used to create a specific partition)
-preprocessing_config_name = "baseline"
+data_version = "baseline"
 
-X_train = load_data(f"../data/X_train_{preprocessing_config_name}.csv")
-X_test = load_data(f"../data/X_test_{preprocessing_config_name}.csv")
-y_train = load_data(f"../data/y_train_{preprocessing_config_name}.csv")
-y_test = load_data(f"../data/y_test_{preprocessing_config_name}.csv")
+X_train = load_data(f"../data/X_train_{data_version}.csv")
+X_test = load_data(f"../data/X_test_{data_version}.csv")
+y_train = load_data(f"../data/y_train_{data_version}.csv")
+y_test = load_data(f"../data/y_test_{data_version}.csv")
 
 # converting target to 1d array
 y_train = y_train.values.ravel()
 y_test = y_test.values.ravel()
 
-logging.info(f"Data version: {preprocessing_config_name}")
+logging.info(f"Data version: {data_version}")
 logging.info("Data loading complete")
 
 # building pipeline
@@ -55,7 +55,7 @@ metrics = evaluate_model(y_train, y_pred_train, y_test, y_pred_test)
 
 # logging experiment to MLFlow
 mlflow.set_tracking_uri('http://localhost:8080')
-mlflow.set_experiment("Experiment LogisticRegression")
+mlflow.set_experiment(f"Experiment {model_type}")
 signature = infer_signature(X_test, pipeline.predict(X_test)) # model signature
 
 with mlflow.start_run():
@@ -65,3 +65,13 @@ with mlflow.start_run():
     mlflow.log_artifact(config_path)
     # log evaluation metrics
     mlflow.log_metrics(metrics)
+    # set tags of the run
+    mlflow.set_tag("model_version", model_version)
+    mlflow.set_tag("data_version", data_version)
+    # log the model
+    mlflow.sklearn.log_model(
+        sk_model=pipeline,
+        name="model",
+        signature=signature,
+        input_example=X_test[:1]
+    )
