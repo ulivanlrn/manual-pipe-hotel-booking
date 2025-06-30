@@ -11,31 +11,29 @@ from mlflow.models import infer_signature
 set_config(transform_output='pandas')
 logging.basicConfig(level=logging.DEBUG, filename='../logs/models.log', filemode='w')
 
-# MODEL AND CONFIG
+# SETTING MODEL TYPE, MODEL VERSION, DATA VERSION
 model_type = "LogisticRegression"
 model_version = "baseline"
+data_version = "baseline"
 config_path = f"../config/{model_type}/{model_version}.yaml"
+
 with open(config_path, "r") as f:
     config = yaml.safe_load(f)
 
-logging.info(f"Experiment on: {model_type}")
-logging.info(f"Config: {model_version}")
-
-# DATA LOADING (data name suffix is the same as the name of the config for preprocessing,
-# which was used to create a specific partition)
-data_version = "baseline"
-
+# loading train and test data
 X_train = load_data(f"../data/X_train_{data_version}.csv")
 X_test = load_data(f"../data/X_test_{data_version}.csv")
 y_train = load_data(f"../data/y_train_{data_version}.csv")
 y_test = load_data(f"../data/y_test_{data_version}.csv")
 
+logging.info(f"Experiment on: {model_type}")
+logging.info(f"Config: {model_version}")
+logging.info(f"Data version: {data_version}")
+logging.info("Data loading complete")
+
 # converting target to 1d array
 y_train = y_train.values.ravel()
 y_test = y_test.values.ravel()
-
-logging.info(f"Data version: {data_version}")
-logging.info("Data loading complete")
 
 # building pipeline
 pipeline = build_pipeline(config)
