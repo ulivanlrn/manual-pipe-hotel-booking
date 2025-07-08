@@ -1,0 +1,42 @@
+type: "RandomForest"
+
+params: {}
+
+decision_threshold_tuning:
+  flag: False
+  threshold: 0.5
+
+encoding:
+  requires_encoding: True
+  random_state: 123
+  cardinality_threshold: 5
+
+outliers:
+  flag: False
+
+  log_transform:
+    flag: True
+    columns: ['lead_time', 'adr']
+
+  outliers_substitute:
+    flag: True
+    columns: ['total_guests', 'previous_cancellations', 'previous_bookings_not_canceled',
+              'booking_changes','required_car_parking_spaces', 'total_of_special_requests', 'total_nights']
+    values: [4, 1, 1, 1, 1, 2, 8]
+
+  discretization:
+    flag: True
+    n_bins: 4
+    random_state: 123
+    columns: ['agent']
+
+scaling:
+  flag: False
+
+  min_max_scaling:
+    flag: True
+    columns: ['total_nights', 'total_guests', 'agent', 'total_of_special_requests']
+
+  std_scaling:
+    flag: True
+    columns: ['lead_time', 'adr']
