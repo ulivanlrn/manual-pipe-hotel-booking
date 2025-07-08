@@ -1,3 +1,4 @@
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
 from preprocessing.feature_encoding import Encoder
 from preprocessing.feature_scaling import Scaler
@@ -13,6 +14,8 @@ def get_model_class(name):
     """
     if name == "LogisticRegression":
         return LogisticRegression
+    elif name == "RandomForest":
+        return RandomForestClassifier
     else:
         raise ValueError(f"Unsupported model type: {name}")
 
