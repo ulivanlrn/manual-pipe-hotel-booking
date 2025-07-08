@@ -25,7 +25,7 @@ def deposit_type(row):
     else:
         return 0
 
-def run_feature_engineering(data, config, current_features):
+def run_feature_engineering(data, config, current_features: set):
     """
     Run feature engineering on the given data.
     :param data: Dataframe.
