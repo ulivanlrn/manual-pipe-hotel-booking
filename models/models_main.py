@@ -12,8 +12,8 @@ set_config(transform_output='pandas')
 logging.basicConfig(level=logging.DEBUG, filename='../logs/models.log', filemode='w')
 
 # SETTING MODEL TYPE, MODEL VERSION, DATA VERSION
-model_type = "LogisticRegression"
-model_version = "baseline"
+model_type = "RandomForest"
+model_version = "version1"
 data_version = "baseline"
 config_path = f"../config/{model_type}/{model_version}.yaml"
 
