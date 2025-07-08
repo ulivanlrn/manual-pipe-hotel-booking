@@ -2,6 +2,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.impute import KNNImputer
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
+from typing import List
 
 class Imputer(BaseEstimator, TransformerMixin):
     """
@@ -13,7 +14,7 @@ class Imputer(BaseEstimator, TransformerMixin):
         num_features (list): List of numerical features.
         cat_features (list): List of categorical features.
     """
-    def __init__(self, config, num_features, cat_features):
+    def __init__(self, config: dict, num_features: List[str], cat_features: List[str]):
         self.config = config
         self.num_features = num_features
         self.cat_features = cat_features
